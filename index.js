@@ -23,11 +23,6 @@ mongoose.connect(process.env.CONN_STRING,
 	});
 mongoose.connection.once('open', () => console.log('Now connected to MongoDB Atlas'));
 
-//for Deployed in AWS routes
-app.get("b4", (req, res) => {
-res.send("Hello world")
-})
-
 app.use("/users", userRoutes);
 app.use("/products", productRoutes);
 app.use("/cart", cartRoutes);
