@@ -1,12 +1,8 @@
 const User = require("../models/users");
-const Cart = require('../models/cart'); //cart Schema
-const Order = require('../models/order'); //order Schema
-const Product = require('../models/products');
 const bcrypt = require("bcrypt");
 const auth = require("../auth");
 
-module.exports.registerUser = (req,res) => {
-
+const registerUser = (req,res) => {
     let newUser = new User({
         firstName: req.body.firstName,
         lastName: req.body.lastName,
@@ -34,9 +30,8 @@ module.exports.registerUser = (req,res) => {
     })
 }
 
-//loginUser process
-module.exports.loginUser = (req,res) => {
-
+const loginUser = (req,res) => {
+    
     return User.findOne ({email: req.body.email})
     .then((result) => {
         if(result == null) {
@@ -61,8 +56,7 @@ module.exports.loginUser = (req,res) => {
         })
 }
 
-//Retrive all users (for admin only)
-module.exports.getAllUsers = (req,res) => {
+const getAllUsers = (req,res) => {
     return User.find ({})
     .then (result => {
         res.status(200).send({result})
@@ -71,10 +65,9 @@ module.exports.getAllUsers = (req,res) => {
              console.error("Error in getting all info", err)
              return res.status(500).send({error: 'Failed to get details of user.'});
     })
-
 }
 
-module.exports.getProfile = (req,res) =>{
+const getProfile = (req,res) =>{
     return User.findById(req.user.id)
     .then (result => {
         if (result){
@@ -89,7 +82,7 @@ module.exports.getProfile = (req,res) =>{
     })
 }
 
-module.exports.resetPassword = async (req, res) => {
+const resetPassword = async (req, res) => {
   try {
     const newPassword = { password : bcrypt.hashSync(req.body.newPassword, 10)};
 
@@ -104,12 +97,9 @@ module.exports.resetPassword = async (req, res) => {
   }
 };
 
-
-
-module.exports.updateAdmin = (req, res) => {
+const updateAdmin = (req, res) => {
   const { userId } = req.params;
 
-  // Check if the requesting user is an admin
   if (!req.user.isAdmin) {
     return res.status(403).send({ message: 'Permission denied. Only admins can update user roles.' });
   }
@@ -125,65 +115,11 @@ module.exports.updateAdmin = (req, res) => {
     });
 };
 
-
-// Create Order for Authenticated User
-module.exports.createOrder = async (req, res) => {
-  try {
-    const userId = req.user.id;
-
-    // Retrieve order details from the request body
-    // You may pass additional details such as shipping information, payment method, etc., as needed
-    const { items, total, /* other order details */ } = req.body;
-
-    const newOrder = new Order({
-      user: userId,
-      items,
-      total,
-      // Include other order details if needed
-    });
-
-    // Save the new order
-    await newOrder.save();
-
-    res.status(201).send({ message: 'Order created successfully', order: newOrder });
-  } catch (error) {
-    console.error('Error in creating order for authenticated user:', error);
-    res.status(500).send({ error: 'Failed to create order' });
-  }
-};
-
-// Retrieve All Orders for Authenticated User
-module.exports.getAllOrders = async (req, res) => {
-  try {
-    const userId = req.user.id;
-
-    // Retrieve all orders for the authenticated user
-    const userOrders = await Order.find({ user: userId });
-
-    res.status(200).send({ orders: userOrders });
-  } catch (error) {
-    console.error('Error in retrieving all orders for authenticated user:', error);
-    res.status(500).send({ error: 'Failed to retrieve orders' });
-  }
-};
-
-// Retrieve All Users' Orders (Admin Only)
-module.exports.getAllUsersOrders = async (req, res) => {
-  try {
-    // Verify the JWT token and check if the user is an admin
-    const token = req.headers.authorization;
-    const decodedToken = jwt.verify(token, config.secret); // Make sure to replace with your actual secret
-
-    if (!decodedToken.isAdmin) {
-      return res.status(403).send({ error: 'Permission denied. Only admins can retrieve all users\' orders.' });
-    }
-
-    // Retrieve all orders for all users
-    const allUsersOrders = await Order.find({});
-
-    res.status(200).send({ orders: allUsersOrders });
-  } catch (error) {
-    console.error('Error in retrieving all users\' orders (admin):', error);
-    res.status(500).send({ error: 'Failed to retrieve orders' });
-  }
+module.exports = { 
+    registerUser, 
+    loginUser,
+    getAllUsers,
+    getProfile,
+    resetPassword,
+    updateAdmin
 };
