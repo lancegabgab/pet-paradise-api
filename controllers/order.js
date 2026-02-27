@@ -2,15 +2,13 @@ const Order = require('../models/order');
 const Cart = require('../models/cart');
 const jwt = require('jsonwebtoken');
 
-
-//CreateOrder Schema
-module.exports.createOrder = async (req, res) => {
+const createOrder = async (req, res) => {
   try {
     const userId = req.user.id;
 
     // Find the user's cart
     const userCart = await Cart.findOne({ userId });
-
+    
     if (!userCart || userCart.items.length === 0) {
       return res.status(404).send({ message: 'No items in the cart' });
     }
@@ -41,8 +39,7 @@ module.exports.createOrder = async (req, res) => {
   }
 };
 
-// Retrieve User’s Order Workflow:
-module.exports.getAllOrders = async (req, res) => {
+const getAllOrders = async (req, res) => {
   try {
     const userId = req.user.id;
 
@@ -56,8 +53,7 @@ module.exports.getAllOrders = async (req, res) => {
   }
 };
 
-//Retrieve All Orders Workflow
-module.exports.getAllUsersOrders = async (req, res) => {
+const getAllUsersOrders = async (req, res) => {
   try {
     // Find all orders (for admin)
     const allOrders = await Order.find({});
@@ -68,3 +64,5 @@ module.exports.getAllUsersOrders = async (req, res) => {
     res.status(500).send({ error: 'Failed to retrieve all orders', message: error.message });
   }
 };
+
+module.exports = { createOrder, getAllOrders, getAllUsersOrders };
