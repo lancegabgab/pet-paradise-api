@@ -1,13 +1,13 @@
 const Product = require("../models/products");
 
-module.exports.getAllProduct = (req, res) => {
+const getAllProduct = (req, res) => {
 	return Product.find({})
 	.then(result => {
 		res.status(200).send({result});
 	})
 };
 
-module.exports.getAllActiveProduct = (req, res)=>{
+const getAllActiveProduct = (req, res) => {
 	return Product.find({isActive: true})
 	.then(product => {
 		if(product.length > 0){
@@ -22,9 +22,7 @@ module.exports.getAllActiveProduct = (req, res)=>{
 
 };
 
-
-//Add a product
-module.exports.addProduct = (req, res) => {
+const addProduct = (req, res) => {
 	const { name, description, price } = req.body;
   
 	Product.findOne({ name })
@@ -53,7 +51,7 @@ module.exports.addProduct = (req, res) => {
 	  });
   };
 
-module.exports.getProduct = (req, res) => {
+const getProduct = (req, res) => {
 	Product.findById(req.params.productId)
 	.then(product => {
 		if (!product) {
@@ -70,7 +68,7 @@ module.exports.getProduct = (req, res) => {
 }
 
 
-module.exports.archiveProduct = (req, res) => {
+const archiveProduct = (req, res) => {
 	let archivedProduct = {
 		isActive: false
 	}
@@ -94,7 +92,7 @@ module.exports.archiveProduct = (req, res) => {
 	});
 }
 
-module.exports.activateProduct= (req, res) => {
+const activateProduct = (req, res) => {
   let activatedProduct = {
   	isActive:true
   }
@@ -117,7 +115,7 @@ module.exports.activateProduct= (req, res) => {
 	});
 }
 
-module.exports.updateProduct = (req, res) => {
+const updateProduct = (req, res) => {
     let updatedProduct = {
         name: req.body.name, // new name
         description: req.body.description,  // new description
@@ -139,7 +137,7 @@ module.exports.updateProduct = (req, res) => {
     })
 }
 
-module.exports.searchByPrice = (req, res) => {
+const searchByPrice = (req, res) => {
   const { minPrice, maxPrice } = req.body;
 
   // Validate input parameters
@@ -155,8 +153,7 @@ module.exports.searchByPrice = (req, res) => {
     .catch(error => res.status(500).send({ error: 'Error searching products by price range' }));
 };
 
-
-module.exports.searchByName = (req, res) => {
+const searchByName = (req, res) => {
   const { name } = req.body;
 
   if (!name) {
@@ -178,4 +175,16 @@ module.exports.searchByName = (req, res) => {
       console.error('Error in searching products by name:', error);
       res.status(500).send({ error: 'Failed to search products by name' });
     });
+};
+
+module.exports = { 
+  getAllProduct, 
+  getAllActiveProduct, 
+  addProduct, 
+  getProduct, 
+  archiveProduct, 
+  activateProduct, 
+  updateProduct, 
+  searchByPrice, 
+  searchByName 
 };
