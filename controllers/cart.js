@@ -1,9 +1,7 @@
 const Cart = require("../models/cart");
 const Product = require("../models/products"); // Add this line to import the Product model
 
-
-// Get User's Cart
-module.exports.getUserCart = (req, res) => {
+const getUserCart = (req, res) => {
   const userId = req.user.id;
 
   Cart.findOne({ userId })
@@ -21,9 +19,7 @@ module.exports.getUserCart = (req, res) => {
     });
 };
 
-
-// Add to Cart
-module.exports.addToCart = async (req, res) => {
+const addToCart = async (req, res) => {
   try {
     const userId = req.user.id;
     const { productId, quantity } = req.body;
@@ -75,9 +71,7 @@ module.exports.addToCart = async (req, res) => {
   }
 };
 
-
-// Change Quantity
-module.exports.changeQuantity = async (req, res) => {
+const changeQuantity = async (req, res) => {
   try {
     const userId = req.user.id;
     const productId = req.body.productId;
@@ -114,10 +108,7 @@ module.exports.changeQuantity = async (req, res) => {
   }
 };
 
-
-
-// Remove Product from Cart
-module.exports.removeProductFromCart = async (req, res) => {
+const removeProductFromCart = async (req, res) => {
   try {
     const userId = req.user.id;
     const productId = req.params.productId;
@@ -152,9 +143,7 @@ module.exports.removeProductFromCart = async (req, res) => {
   }
 };
 
-
-// Clear All Cart Items
-module.exports.clearCartItems = async (req, res) => {
+const clearCartItems = async (req, res) => {
   try {
     const userId = req.user.id;
 
@@ -179,4 +168,11 @@ module.exports.clearCartItems = async (req, res) => {
   }
 };
 
+module.exports = {
+  getUserCart,
+  addToCart,
+  changeQuantity,
+  removeProductFromCart,
+  clearCartItems
+}
 
