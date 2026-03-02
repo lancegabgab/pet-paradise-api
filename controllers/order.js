@@ -5,7 +5,8 @@ const jwt = require('jsonwebtoken');
 const createOrder = async (req, res) => {
   try {
     const userId = req.user.id;
-    const userCart = await Cart.findOne({ userId });
+    const userCart = await Cart.findOne({ userId })
+      .populate("items.productId", "name price");;
     
     if (!userCart || userCart.items.length === 0) {
       return res.status(404).send({ message: 'No items in the cart' });
