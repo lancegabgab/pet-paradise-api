@@ -5,8 +5,6 @@ const jwt = require('jsonwebtoken');
 const createOrder = async (req, res) => {
   try {
     const userId = req.user.id;
-
-    // Find the user's cart
     const userCart = await Cart.findOne({ userId });
     
     if (!userCart || userCart.items.length === 0) {
@@ -18,6 +16,7 @@ const createOrder = async (req, res) => {
       user: userId,
       productsOrdered: userCart.items.map((item) => ({
         productId: item.productId,
+        name: item.productId.name,
         quantity: item.quantity,
         price: item.price,
       })),
