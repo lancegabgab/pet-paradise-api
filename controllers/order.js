@@ -11,11 +11,10 @@ const createOrder = async (req, res) => {
       return res.status(404).send({ message: 'No items in the cart' });
     }
 
-    // Create a new order document
     const newOrder = new Order({
       user: userId,
       productsOrdered: userCart.items.map((item) => ({
-        productId: item.productId,
+        productId: item.productId._id,
         name: item.productId.name,
         quantity: item.quantity,
         price: item.price,
