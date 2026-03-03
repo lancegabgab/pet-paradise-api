@@ -50,11 +50,14 @@ const createOrder = async (userId) => {
 
 const getUserOrders = async (userId) => {
   if (!userId) throw new Error('Unauthorized');
-  return await Order.find({ user: userId });
+  return await Order.find({ user: userId })
+    .populate('items.userId', 'firstName lastName');
 };
 
 const getAllOrders = async () => {
-  return await Order.find({});
+  return await Order.find({})
+    .populate('items.userId', 'firstName lastName');
 };
 
 module.exports = { createOrder, getUserOrders, getAllOrders };
+
