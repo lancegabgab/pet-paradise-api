@@ -1,67 +1,38 @@
-const Order = require('../models/order');
-const Cart = require('../models/cart');
-const jwt = require('jsonwebtoken');
+const orderService = require('../services/order');
 
 const createOrder = async (req, res) => {
   try {
-    const userId = req.user.id;
-    const userCart = await Cart.findOne({ userId })
-      .populate("items.productId", "name price");;
-    
-    if (!userCart || userCart.items.length === 0) {
-      return res.status(404).send({ message: 'No items in the cart' });
-    }
-
-    const newOrder = new Order({
-      user: userId,
-      productsOrdered: userCart.items.map((item) => ({
-        productId: item.productId._id,
-        name: item.productId.name,
-        quantity: item.quantity,
-        price: item.price,
-      })),
-      totalPrice: userCart.total,
-    });
-
-    // Save the new order
-    await newOrder.save();
-
-    // Clear the user's cart
-    userCart.items = [];
-    userCart.total = 0;
-    await userCart.save();
-
-    return res.status(201).send({ message: 'Order created successfully', order: newOrder });
+    const newOrder = await orderService.createOrder(req.user?.id);
+    res.status(201).json({ message: 'Order created successfully', order: newOrder });
   } catch (error) {
-    console.error('Error in creating order:', error);
-    res.status(500).send({ error: 'Failed to create order', message: error.message });
+    console.error('Error creating order:', error);
+    const status = error.message === 'No items in the cart' ? 404 : 500;
+    res.status(status).json({ message: error.message });
+  }
+};
+
+const getUserOrders = async (req, res) => {
+  try {
+    const orders = await orderService.getUserOrders(req.user?.id);
+    res.status(200).json({ orders });
+  } catch (error) {
+    console.error('Error retrieving user orders:', error);
+    res.status(500).json({ message: error.message });
   }
 };
 
 const getAllOrders = async (req, res) => {
   try {
-    const userId = req.user.id;
-
-    // Find the user's orders
-    const userOrders = await Order.find({ user: userId });
-
-    res.status(200).send({ orders: userOrders });
+    const orders = await orderService.getAllOrders();
+    res.status(200).json({ orders });
   } catch (error) {
-    console.error('Error in retrieving user orders:', error);
-    res.status(500).send({ error: 'Failed to retrieve user orders', message: error.message });
+    console.error('Error retrieving all orders (admin):', error);
+    res.status(500).json({ message: error.message });
   }
 };
 
-const getAllUsersOrders = async (req, res) => {
-  try {
-    // Find all orders (for admin)
-    const allOrders = await Order.find({});
-
-    res.status(200).send({ orders: allOrders });
-  } catch (error) {
-    console.error('Error in retrieving all orders (admin):', error);
-    res.status(500).send({ error: 'Failed to retrieve all orders', message: error.message });
-  }
+module.exports = {
+  createOrder,
+  getUserOrders,
+  getAllOrders,
 };
-
-module.exports = { createOrder, getAllOrders, getAllUsersOrders };
