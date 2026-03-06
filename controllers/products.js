@@ -24,7 +24,7 @@ const addProduct = async (req, res) => {
     res.status(201).json(savedProduct);
   } catch (err) {
     if (err.message === "Product already exists")
-      return res.status(409).json({ error: err.message });
+      return res.status(409).json({ error: err.messag });
     res.status(500).json({ error: "Failed to create product" });
   }
 };
@@ -80,21 +80,6 @@ const activateProduct = async (req, res) => {
   }
 };
 
-const searchByPrice = async (req, res) => {
-  try {
-    const { minPrice, maxPrice } = req.body;
-    if (!minPrice || !maxPrice) 
-      return res.status(400).json({ error: "minPrice and maxPrice required" });
-    const products = await productService.searchByPriceRange(
-      minPrice,
-      maxPrice
-    );
-    res.status(200).json(products);
-  } catch (err) {
-    res.status(500).json({ error: "Search failed" });
-  }
-};
-
 module.exports = {
   getAllProduct,
   getAllActiveProduct,
@@ -102,6 +87,5 @@ module.exports = {
   getProduct,
   updateProduct,
   archiveProduct,
-  activateProduct,
-  searchByPrice
+  activateProduct
 };
