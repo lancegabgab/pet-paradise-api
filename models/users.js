@@ -24,7 +24,8 @@ const userSchema = new mongoose.Schema ({
 	},
 	mobileNo:{
 		type:String,
-		required:[true, "Mobile number is required"]
+		required:[true, "Mobile number is required"],
+		unique: true
 	}
 });
 
