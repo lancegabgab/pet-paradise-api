@@ -12,7 +12,7 @@ const productSchema = new mongoose.Schema ({
 	},
 	price:{
 		type:Number,
-		required: [true, `Price is Required`]
+		required: [true, `Price is required`]
 	},	
 	createdOn:{
 		type: Date,
