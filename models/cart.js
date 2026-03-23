@@ -30,10 +30,6 @@ const cartItemSchema = new mongoose.Schema({
   total: {
     type: Number,
     required: true,
-  },
-  orderedOn: {
-    type: Date,
-    default: Date.now,
   }
 });
 
