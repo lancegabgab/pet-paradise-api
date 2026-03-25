@@ -1,5 +1,5 @@
-const Cart = require("../models/cart");
-const Product = require("../models/products");
+const Cart = require("../models/cart.model");
+const Product = require("../models/product.model");
 
 const getUserCart = async (userId) => {
   const cart = await Cart.findOne({ userId })
