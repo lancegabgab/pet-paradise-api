@@ -1,9 +1,4 @@
 const mongoose = require('mongoose');
-const jwt = require("jsonwebtoken");
-const Cart = require("../models/cart");
-const Order = require("../models/order");
-const auth = require("../auth");
-const { verify, verifyAdmin } = auth;
 
 const orderSchema = new mongoose.Schema({
   user: {
