@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
-const Order = require('../models/order');
-const Cart = require('../models/cart');
+const Order = require('../models/order.model');
+const Cart = require('../models/cart.model');
 
 const createOrder = async (userId) => {
   if (!userId) throw new Error('Unauthorized');
