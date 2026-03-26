@@ -1,9 +1,9 @@
 require('dotenv').config();
 const express = require("express");
-const userRoutes = require("./routes/users");
-const productRoutes = require("./routes/products");
-const cartRoutes = require("./routes/cart");
-const orderRoutes = require("./routes/order");
+const userRoutes = require("./routes/user.routes");
+const productRoutes = require("./routes/product.routes");
+const cartRoutes = require("./routes/cart.routes");
+const orderRoutes = require("./routes/order.routes");
 const connectDB = require("./config/mongoose");
 
 const port = process.env.PORT;
