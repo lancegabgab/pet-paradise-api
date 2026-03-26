@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const productController = require("../controllers/products");
+const productController = require("../controllers/product.controller");
 
 const auth = require("../auth");
 const { verify, verifyAdmin } = auth;
