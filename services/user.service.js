@@ -1,6 +1,6 @@
 const User = require("../models/user.model");
 const bcrypt = require("bcrypt");
-const auth = require("../auth");
+const createAccessToken = require("../middlewares/createAccessToken");
 
 const registerUser = async (userData) => {
     if (userData.mobileNo.length !== 11)
@@ -27,7 +27,8 @@ const loginUser = async (userData) => {
     const isPasswordCorrect = bcrypt.compareSync(userData.password, user.password);
     if (!isPasswordCorrect)
         throw new Error("Email and password do not match");
-    return auth.createAccessToken(user);
+    return createAccessToken(user);
+    
 };
 
 const getAllUsers = async () => {
