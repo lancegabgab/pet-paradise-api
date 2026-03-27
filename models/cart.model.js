@@ -20,11 +20,7 @@ const cartItemSchema = new mongoose.Schema({
       price: {
         type: Number, 
         required: false,
-      },
-      subtotal: {
-        type: Number,
-        required: false, 
-      },
+      }
     }
   ],
   total: {
