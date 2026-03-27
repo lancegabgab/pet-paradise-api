@@ -1,9 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const productController = require("../controllers/product.controller");
-
-const auth = require("../auth");
-const { verify, verifyAdmin } = auth;
+const verify = require("../middlewares/verify");
+const verifyAdmin = require("../middlewares/verifyAdmin");
 
 router.post("/", verify, verifyAdmin, productController.addProduct);
 router.get("/all", verify, verifyAdmin, productController.getAllProduct);
