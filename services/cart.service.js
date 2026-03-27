@@ -18,8 +18,6 @@ const addToCart = async (userId, productId, quantity) => {
     throw new Error("Product not found");
   }
 
-  const subtotal = product.price * quantity;
-
   let userCart = await Cart.findOne({ userId });
 
   if (!userCart) {
@@ -36,23 +34,20 @@ const addToCart = async (userId, productId, quantity) => {
 
   if (existingItem) {
     existingItem.quantity += quantity;
-    existingItem.subtotal = existingItem.quantity * existingItem.price;
   } else {
     userCart.items.push({
       productId,
       quantity,
       price: product.price,
-      subtotal,
     });
   }
 
   userCart.total = userCart.items.reduce(
-    (acc, item) => acc + item.subtotal,
+    (acc, item) => acc + item.price * item.quantity,
     0
   );
 
   await userCart.save();
-
   return userCart;
 };
 
@@ -68,15 +63,13 @@ const changeQuantity = async (userId, productId, newQuantity) => {
   if (!cartItem) throw new Error("Product not in cart");
 
   cartItem.quantity = newQuantity;
-  cartItem.subtotal = newQuantity * cartItem.price;
 
   userCart.total = userCart.items.reduce(
-    (acc, item) => acc + item.subtotal,
+    (acc, item) => acc + item.price * item.quantity,
     0
   );
 
   await userCart.save();
-
   return userCart;
 };
 
@@ -90,12 +83,11 @@ const removeProductFromCart = async (userId, productId) => {
   );
 
   userCart.total = userCart.items.reduce(
-    (acc, item) => acc + item.subtotal,
+    (acc, item) => acc + item.price * item.quantity,
     0
   );
 
   await userCart.save();
-
   return userCart;
 };
 
@@ -108,7 +100,6 @@ const clearCartItems = async (userId) => {
   userCart.total = 0;
 
   await userCart.save();
-
   return userCart;
 };
 
