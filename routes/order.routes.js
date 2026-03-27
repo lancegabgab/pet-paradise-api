@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const orderController = require("../controllers/order.controller");
-const auth = require("../auth");
-const { verify, verifyAdmin } = auth;
+const verify = require("../middlewares/verify");
+const verifyAdmin = require("../middlewares/verifyAdmin");
 
 router.post('/checkout', verify, orderController.createOrder);
 router.get('/my-orders', verify, orderController.getUserOrders);
