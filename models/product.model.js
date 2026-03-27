@@ -14,7 +14,7 @@ const productSchema = new mongoose.Schema ({
 		type:Number,
 		required: [true, `Price is required`]
 	},	
-	createdOn:{
+	createdAt:{
 		type: Date,
 		default: Date.now 
 	},
