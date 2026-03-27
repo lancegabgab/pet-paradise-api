@@ -26,11 +26,7 @@ const userSchema = new mongoose.Schema ({
 		type:String,
 		required:[true, "Mobile number is required"],
 		unique: true
-	},
-	createdAt:{
-		type: Date,
-		default: Date.now 
-	},
-});
+	}
+}, { timestamps: true });
 
 module.exports = mongoose.model("User", userSchema);
