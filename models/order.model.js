@@ -31,7 +31,7 @@ const orderSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  orderDate: {
+  createdAt: {
     type: Date,
     default: Date.now,
   },
