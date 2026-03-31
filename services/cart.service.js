@@ -2,15 +2,18 @@ const Cart = require("../models/cart.model");
 const Product = require("../models/product.model");
 
 const getUserCart = async (userId) => {
-  const cart = await Cart.findOne({ userId })
-    .populate("items.productId", "name price");
+  const cart = await Cart.findOne({ userId });
 
   if (!cart) {
-    throw new Error("Cart not found");
+    return { cart: null, items: [] };
   }
 
-  return cart;
+  const items = await CartItem.find({ cartId: cart._id })
+    .populate("productId", "name price");
+
+  return { cart, items };
 };
+
 
 const addToCart = async (userId, productId, quantity) => {
   const product = await Product.findById(productId);
