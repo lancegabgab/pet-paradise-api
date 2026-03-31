@@ -46,25 +46,25 @@ const addToCart = async (userId, productId, quantity) => {
 };
 
 const changeQuantity = async (userId, productId, newQuantity) => {
-  const userCart = await Cart.findOne({ userId });
+  const cart = await Cart.findOne({ userId });
+  if (!cart) throw new Error("Cart not found");
 
-  if (!userCart) throw new Error("Cart not found");
-
-  const cartItem = userCart.items.find(
-    (item) => item.productId.toString() === productId
-  );
+  const cartItem = await CartItem.findOne({
+    cartId: cart._id,
+    productId,
+  });
 
   if (!cartItem) throw new Error("Product not in cart");
 
   cartItem.quantity = newQuantity;
+  await cartItem.save();
 
-  userCart.total = userCart.items.reduce(
-    (acc, item) => acc + item.price * item.quantity,
-    0
+  const items = await CartItem.find({ cartId: cart._id }).populate(
+    "productId",
+    "name price"
   );
 
-  await userCart.save();
-  return userCart;
+  return { cart, items };
 };
 
 const removeProductFromCart = async (userId, productId) => {
