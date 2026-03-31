@@ -85,15 +85,13 @@ const removeProductFromCart = async (userId, productId) => {
 };
 
 const clearCartItems = async (userId) => {
-  const userCart = await Cart.findOne({ userId });
+  const cart = await Cart.findOne({ userId });
+  if (!cart) throw new Error("Cart not found");
 
-  if (!userCart) throw new Error("Cart not found");
+  await CartItem.deleteMany({ cartId: cart._id });
 
-  userCart.items = [];
-  userCart.total = 0;
-
-  await userCart.save();
-  return userCart;
+  const items = [];
+  return { cart, items };
 };
 
 module.exports = {
