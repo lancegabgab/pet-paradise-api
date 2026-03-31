@@ -68,21 +68,20 @@ const changeQuantity = async (userId, productId, newQuantity) => {
 };
 
 const removeProductFromCart = async (userId, productId) => {
-  const userCart = await Cart.findOne({ userId });
+  const cart = await Cart.findOne({ userId });
+  if (!cart) throw new Error("Cart not found");
 
-  if (!userCart) throw new Error("Cart not found");
+  await CartItem.findOneAndDelete({
+    cartId: cart._id,
+    productId,
+  });
 
-  userCart.items = userCart.items.filter(
-    (item) => item.productId.toString() !== productId
+  const items = await CartItem.find({ cartId: cart._id }).populate(
+    "productId",
+    "name price"
   );
 
-  userCart.total = userCart.items.reduce(
-    (acc, item) => acc + item.price * item.quantity,
-    0
-  );
-
-  await userCart.save();
-  return userCart;
+  return { cart, items };
 };
 
 const clearCartItems = async (userId) => {
