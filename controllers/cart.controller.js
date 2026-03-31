@@ -2,8 +2,11 @@ const cartService = require("../services/cart.service");
 
 const getUserCart = async (req, res) => {
   try {
-    const cart = await cartService.getUserCart(req.user.id);
-    res.status(200).send({ cart });
+    const { cart, items } = await cartService.getUserCart(req.user.id);
+    res.status(200).send({ 
+      cart, 
+      items,
+    });
   } catch (error) {
     res.status(404).send({ error: error.message });
   }
