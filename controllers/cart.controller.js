@@ -35,8 +35,8 @@ const addToCart = async (req, res) => {
 const changeQuantity = async (req, res) => {
   try {
     const { productId, quantity } = req.body;
-
-    const cart = await cartService.changeQuantity(
+    
+    const { cart, items } = await cartService.changeQuantity(
       req.user.id,
       productId,
       quantity
@@ -45,6 +45,7 @@ const changeQuantity = async (req, res) => {
     res.status(200).send({
       message: "Quantity updated successfully",
       cart,
+      items, 
     });
   } catch (error) {
     res.status(400).send({ error: error.message });
@@ -53,7 +54,7 @@ const changeQuantity = async (req, res) => {
 
 const removeProductFromCart = async (req, res) => {
   try {
-    const cart = await cartService.removeProductFromCart(
+    const { cart, items } = await cartService.removeProductFromCart(
       req.user.id,
       req.params.productId
     );
@@ -61,6 +62,7 @@ const removeProductFromCart = async (req, res) => {
     res.status(200).send({
       message: "Product removed successfully",
       cart,
+      items,
     });
   } catch (error) {
     res.status(400).send({ error: error.message });
@@ -69,11 +71,12 @@ const removeProductFromCart = async (req, res) => {
 
 const clearCartItems = async (req, res) => {
   try {
-    const cart = await cartService.clearCartItems(req.user.id);
+    const { cart, items } = await cartService.clearCartItems(req.user.id);
 
     res.status(200).send({
       message: "Cart cleared successfully",
       cart,
+      items, 
     });
   } catch (error) {
     res.status(400).send({ error: error.message });
