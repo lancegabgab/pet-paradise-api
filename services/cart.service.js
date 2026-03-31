@@ -15,44 +15,33 @@ const getUserCart = async (userId) => {
   return { cart, items };
 };
 
-
 const addToCart = async (userId, productId, quantity) => {
-  const product = await Product.findById(productId);
-  if (!product) {
-    throw new Error("Product not found");
+  let cart = await Cart.findOne({ userId });
+  if (!cart) {
+    cart = await Cart.create({ userId });
   }
 
-  let userCart = await Cart.findOne({ userId });
-
-  if (!userCart) {
-    userCart = new Cart({
-      userId,
-      items: [],
-      total: 0,
-    });
-  }
-
-  const existingItem = userCart.items.find(
-    (item) => item.productId.toString() === productId
-  );
+  const existingItem = await CartItem.findOne({
+    cartId: cart._id,
+    productId,
+  });
 
   if (existingItem) {
     existingItem.quantity += quantity;
+    await existingItem.save();
   } else {
-    userCart.items.push({
+    await CartItem.create({
+      cartId: cart._id,
       productId,
       quantity,
       price: product.price,
     });
   }
 
-  userCart.total = userCart.items.reduce(
-    (acc, item) => acc + item.price * item.quantity,
-    0
-  );
+  const items = await CartItem.find({ cartId: cart._id })
+    .populate("productId", "name price");
 
-  await userCart.save();
-  return userCart;
+  return { cart, items };
 };
 
 const changeQuantity = async (userId, productId, newQuantity) => {
