@@ -2,12 +2,19 @@ const orderService = require('../services/order.service');
 
 const createOrder = async (req, res) => {
   try {
-    const newOrder = await orderService.createOrder(req.user?.id);
-    res.status(201).json({ message: 'Order created successfully', order: newOrder });
+    const newOrderData = await orderService.createOrder(req.user?.id);
+    res.status(201).json({
+      success: true,
+      message: 'Order created successfully',
+      data: newOrderData
+    });
   } catch (error) {
     console.error('Error creating order:', error);
-    const status = error.message === 'No items in the cart' ? 404 : 500;
-    res.status(status).json({ message: error.message });
+
+    res.status(error.status || 500).json({
+      success: false,
+      message: error.message
+    });
   }
 };
 
