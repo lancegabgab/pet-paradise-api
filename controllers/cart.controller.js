@@ -3,12 +3,16 @@ const cartService = require("../services/cart.service");
 const getUserCart = async (req, res) => {
   try {
     const { cart, items } = await cartService.getUserCart(req.user.id);
-    res.status(200).send({ 
-      cart, 
-      items,
+    res.status(200).json({ 
+      success: true,
+      message: "Cart retrieved successfully",
+      data: { cart, items },
     });
   } catch (error) {
-    res.status(404).send({ error: error.message });
+    res.status(404).json({ 
+      success: false,
+      message: error.message 
+    });
   }
 };
 
@@ -22,13 +26,16 @@ const addToCart = async (req, res) => {
       quantity
     );
 
-    res.status(200).send({
+    res.status(200).json({
+      success: true,
       message: "Item added to cart successfully",
-      cart,
-      items
+      data: { cart, items },
     });
   } catch (error) {
-    res.status(400).send({ error: error.message });
+    res.status(400).json({ 
+      success: false, 
+      message: error.message 
+    });
   }
 };
 
@@ -42,13 +49,16 @@ const changeQuantity = async (req, res) => {
       quantity
     );
 
-    res.status(200).send({
+    res.status(200).json({
+      success: true,
       message: "Quantity updated successfully",
-      cart,
-      items, 
+      data: { cart, items },
     });
   } catch (error) {
-    res.status(400).send({ error: error.message });
+    res.status(400).json({ 
+      success: false,
+      message: error.message 
+    });
   }
 };
 
@@ -59,13 +69,16 @@ const removeProductFromCart = async (req, res) => {
       req.params.productId
     );
 
-    res.status(200).send({
+    res.status(200).json({
+      success: true,
       message: "Product removed successfully",
-      cart,
-      items,
+      data: { cart, items },
     });
   } catch (error) {
-    res.status(400).send({ error: error.message });
+    res.status(400).json({ 
+      success: false,
+      error: error.message 
+    });
   }
 };
 
@@ -73,13 +86,16 @@ const clearCartItems = async (req, res) => {
   try {
     const { cart, items } = await cartService.clearCartItems(req.user.id);
 
-    res.status(200).send({
+    res.status(200).json({
+      success: true,
       message: "Cart cleared successfully",
-      cart,
-      items, 
+      data: { cart, items },
     });
   } catch (error) {
-    res.status(400).send({ error: error.message });
+    res.status(400).json({ 
+      success: false,
+      message: error.message 
+    });
   }
 };
 
