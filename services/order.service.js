@@ -97,9 +97,23 @@ const getUserOrders = async (userId) => {
 };
 
 const getAllOrders = async () => {
-  return await Order.find({})
+  const orders = await Order.find({})
     .populate('user', 'firstName lastName')
-    .sort({ orderDate: -1 });
+    .sort({ createdAt: -1 });
+
+  const ordersWithItems = await Promise.all(
+    orders.map(async (order) => {
+      const items = await OrderItem.find({ orderId: order._id })
+        .populate('productId', 'name price image');
+
+      return {
+        order,
+        items
+      };
+    })
+  );
+
+  return ordersWithItems;
 };
 
 module.exports = { createOrder, getUserOrders, getAllOrders };
