@@ -21,10 +21,16 @@ const createOrder = async (req, res) => {
 const getUserOrders = async (req, res) => {
   try {
     const orders = await orderService.getUserOrders(req.user?.id);
-    res.status(200).json(orders);
+    res.status(200).json({
+      success: true,
+      data: orders
+    });
   } catch (error) {
     console.error('Error retrieving user orders:', error);
-    res.status(500).json({ message: error.message });
+    res.status(error.status || 500).json({
+      success: false,
+      message: error.message
+    });
   }
 };
 
