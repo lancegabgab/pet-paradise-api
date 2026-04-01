@@ -37,10 +37,17 @@ const getUserOrders = async (req, res) => {
 const getAllOrders = async (req, res) => {
   try {
     const orders = await orderService.getAllOrders();
-    res.status(200).json(orders);
+    res.status(200).json({
+      success: true,
+      data: orders
+    });
   } catch (error) {
     console.error('Error retrieving all orders (admin):', error);
-    res.status(500).json({ message: error.message });
+
+    res.status(error.status || 500).json({
+      success: false,
+      message: error.message
+    });
   }
 };
 
