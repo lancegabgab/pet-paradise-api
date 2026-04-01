@@ -72,10 +72,28 @@ const createOrder = async (userId) => {
 };
 
 const getUserOrders = async (userId) => {
-  if (!userId) throw new Error('Unauthorized');
-  return await Order.find({ user: userId })
-    .populate('user', 'firstName lastName')
-    .sort({ orderDate: -1 });
+  if (!userId) {
+    const err = new Error('Unauthorized');
+    err.status = 401;
+    throw err;
+  }
+
+  const orders = await Order.find({ user: userId })
+    .sort({ createdAt: -1 });
+
+  const ordersWithItems = await Promise.all(
+    orders.map(async (order) => {
+      const items = await OrderItem.find({ orderId: order._id })
+        .populate('productId', 'name price');
+
+      return {
+        order,
+        items
+      };
+    })
+  );
+
+  return ordersWithItems;
 };
 
 const getAllOrders = async () => {
