@@ -20,15 +20,14 @@ const registerUser = async (userData) => {
     return await newUser.save();
 };
 
-const loginUser = async (userData) => {
-    const user = await User.findOne({ email: userData.email });
-    if (!user) 
-        throw new Error("No Email Found");
-    const isPasswordCorrect = bcrypt.compareSync(userData.password, user.password);
-    if (!isPasswordCorrect)
-        throw new Error("Email and password do not match");
-    return createAccessToken(user);
-    
+const loginUser = async ({ email, password }) => {
+  const user = await User.findOne({ email }).select("+password");
+  if (!user)
+    throw new Error("Invalid email or password");
+  const isMatch = await bcrypt.compare(password, user.password);
+  if (!isMatch)
+    throw new Error("Invalid email or password");
+  return createAccessToken(user);
 };
 
 const getAllUsers = async () => {
