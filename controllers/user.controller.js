@@ -1,12 +1,19 @@
 const userService = require("../services/user.service");
 
 const registerUser = async (req, res) => {
-    try {
-        await userService.registerUser(req.body);
-        res.status(201).send({ message: "Registered Successfully" });
-    } catch (error) {
-        res.status(400).send({ error: error.message });
-    }
+  try {
+    const user = await userService.registerUser(req.body);
+    res.status(201).json({
+      success: true,
+      message: "Registered successfully",
+      data: user
+    });
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      message: error.message
+    });
+  }
 };
 
 const loginUser = async (req, res) => {
