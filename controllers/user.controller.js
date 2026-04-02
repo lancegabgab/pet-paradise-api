@@ -33,12 +33,19 @@ const loginUser = async (req, res) => {
 };
 
 const getAllUsers = async (req, res) => {
-    try {
-        const users = await userService.getAllUsers();
-        res.status(200).send(users);
-    } catch (error) {
-        res.status(500).send({ error: error.message });
-    }
+  try {
+    const users = await userService.getAllUsers();
+    res.status(200).json({
+      success: true,
+      message: "Users fetched successfully",
+      data: users
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
+  }
 };
 
 const getProfile = async (req, res) => {
