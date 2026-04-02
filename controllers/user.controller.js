@@ -49,12 +49,19 @@ const getAllUsers = async (req, res) => {
 };
 
 const getProfile = async (req, res) => {
-    try {
-        const user = await userService.getProfile(req.user.id);
-        res.status(200).send(user);
-    } catch (error) {
-        res.status(404).send({ error: error.message });
-    }
+  try {
+    const user = await userService.getProfile(req.user.id);
+    res.status(200).json({
+      success: true,
+      message: "Profile fetched successfully",
+      data: user
+    });
+  } catch (error) {
+    res.status(404).json({
+      success: false,
+      message: error.message
+    });
+  }
 };
 
 const resetPassword = async (req, res) => {
