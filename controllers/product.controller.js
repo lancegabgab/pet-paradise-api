@@ -12,16 +12,23 @@ const getAllProduct = async (req, res) => {
     res.status(500).json({ 
       success: false,
       message: err.message
-     });
+    });
   }
 };
 
 const getAllActiveProduct = async (req, res) => {
   try {
     const products = await productService.getAllActiveProducts();
-    res.status(200).json(products);
+    res.status(200).json({
+      success: true,
+      message: "Fetched products successfully",
+      data: products
+    });
   } catch (err) {
-    res.status(500).json({ error: "Failed to fetch active products" });
+    res.status(500).json({ 
+      success: false,
+      message: err.message
+    });
   }
 };
 
