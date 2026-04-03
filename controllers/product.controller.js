@@ -103,14 +103,24 @@ const archiveProduct = async (req, res) => {
 
 const activateProduct = async (req, res) => {
   try {
-    const activated = await productService.activateProductById(
+    const activatedProduct = await productService.activateProductById(
       req.params.productId
     );
-    if (!activated) 
-      return res.status(404).json({ error: "Product not found" });
-    res.status(200).json({ message: "Product activated successfully" });
+    if (!activatedProduct) 
+      return res.status(404).json({ 
+        success: false,
+        message: "Product not found" 
+      });
+    res.status(200).json({ 
+      success: true,
+      message: "Product activated successfully",
+      data: activatedProduct
+    });
   } catch (err) {
-    res.status(500).json({ error: "Failed to activate product" });
+    res.status(500).json({
+      success: false, 
+      message: err.message
+    });
   }
 };
 
