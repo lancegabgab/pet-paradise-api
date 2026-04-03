@@ -50,28 +50,27 @@ const loginUser = async ({ email, password }) => {
 };
 
 const getAllUsers = async () => {
-    return await User.find({});
+  return await User.find({});
 };
 
 const getProfile = async (userId) => {
-    const user = await User.findById(userId);
-    if (!user)
-        throw new Error("User not found");
-    return user;
+  const user = await User.findById(userId);
+  if (!user)
+    throw new Error("User not found");
+  return user;
 };
 
 const resetPassword = async (userId, newPassword) => {
   if (newPassword.length < 8)
-      throw new Error("Password must be at least 8 characters");
+    throw new Error("Password must be at least 8 characters");
   const hashedPassword = bcrypt.hashSync(newPassword, 10);
   return await User.findByIdAndUpdate(userId, { password: hashedPassword });
 };
 
 const updateAdmin = async (requestingUser, userId) => {
-    if (!requestingUser.isAdmin)
-        throw new Error("Permission denied. Only admins can update user roles.");
-    await User.findByIdAndUpdate(userId, { isAdmin: true });
-    return "User role updated successfully";
+  if (!requestingUser.isAdmin)
+    throw new Error("Permission denied. Only admins can update user roles.");
+  return await User.findByIdAndUpdate(userId, { isAdmin: true });
 };
 
 module.exports = {

@@ -84,15 +84,22 @@ const resetPassword = async (req, res) => {
 };
 
 const updateAdmin = async (req, res) => {
-    try {
-        const message = await userService.updateAdmin(
-            req.user,
-            req.params.userId
-        );
-        res.status(200).send({ message });
-    } catch (error) {
-        res.status(403).send({ error: error.message });
-    }
+  try {
+    const user = await userService.updateAdmin(
+      req.user,
+      req.params.userId
+    );
+    res.status(200).send({ 
+      success: true, 
+      message: "Successfully set to admin",
+      data: user
+     });
+  } catch (error) {
+    res.status(403).send({ 
+      success: false,
+      message: error.message
+    });
+  }
 };
 
 module.exports = { 
