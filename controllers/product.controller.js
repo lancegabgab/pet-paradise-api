@@ -56,15 +56,25 @@ const getProduct = async (req, res) => {
 
 const updateProduct = async (req, res) => {
   try {
-    const updated = await productService.updateProductById(
+    const updatedProduct = await productService.updateProductById(
       req.params.productId,
       req.body
     );
-    if (!updated) 
-      return res.status(404).json({ error: "Product not found" });
-    res.status(200).json(updated);
+    if (!updatedProduct) 
+      return res.status(404).json({ 
+        success: false,
+        message: "Product not found" 
+      });
+    res.status(200).json({
+      success: true,
+      message: "Updated product successfully",
+      data: updatedProduct
+    });
   } catch (err) {
-    res.status(500).json({ error: "Failed to update product" });
+    res.status(500).json({ 
+      success: false,
+      message: err.message 
+    });
   }
 };
 
