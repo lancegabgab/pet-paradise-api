@@ -11,7 +11,7 @@ const getAllProduct = async (req, res) => {
   } catch (err) {
     res.status(500).json({ 
       success: false,
-      message: err.message
+      message: "Internal server error" 
     });
   }
 };
@@ -27,7 +27,7 @@ const getAllActiveProduct = async (req, res) => {
   } catch (err) {
     res.status(500).json({ 
       success: false,
-      message: err.message
+      message: "Internal server error" 
     });
   }
 };
@@ -58,10 +58,20 @@ const getProduct = async (req, res) => {
   try {
     const product = await productService.getProductById(req.params.productId);
     if (!product)
-      return res.status(404).json({ error: "Product not found" });
-    res.status(200).json(product);
+      return res.status(404).json({ 
+        success: false,
+        message: "Product not found" 
+      });
+    res.status(200).json({
+      success: true,
+      message: "Fetched product successfully",
+      data: product
+    });
   } catch (err) {
-    res.status(500).json({ error: "Failed to fetch product" });
+    res.status(500).json({ 
+      success: false,
+      message: "Internal server error" 
+    });
   }
 };
 
@@ -84,7 +94,7 @@ const updateProduct = async (req, res) => {
   } catch (err) {
     res.status(500).json({ 
       success: false,
-      message: err.message 
+      message: "Internal server error" 
     });
   }
 };
@@ -107,7 +117,7 @@ const archiveProduct = async (req, res) => {
   } catch (err) {
     res.status(500).json({ 
       success: false,
-      message: err.message 
+      message: "Internal server error" 
     });
   }
 };
@@ -130,7 +140,7 @@ const activateProduct = async (req, res) => {
   } catch (err) {
     res.status(500).json({
       success: false, 
-      message: err.message
+      message: "Internal server error" 
     });
   }
 };
