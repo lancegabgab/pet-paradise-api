@@ -80,14 +80,24 @@ const updateProduct = async (req, res) => {
 
 const archiveProduct = async (req, res) => {
   try {
-    const archived = await productService.archiveProductById(
+    const archivedProduct = await productService.archiveProductById(
       req.params.productId
     );
-    if (!archived)
-      return res.status(404).json({ error: "Product not found" });
-    res.status(200).json({ message: "Product archived successfully" });
+    if (!archivedProduct)
+      return res.status(404).json({ 
+        success: false,
+        message: "Product not found"
+      });
+    res.status(200).json({ 
+      success: true,
+      message: "Product archived successfully",
+      data: archivedProduct
+    });
   } catch (err) {
-    res.status(500).json({ error: "Failed to archive product" });
+    res.status(500).json({ 
+      success: false,
+      message: err.message 
+    });
   }
 };
 
