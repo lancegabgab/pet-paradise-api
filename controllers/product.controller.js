@@ -3,9 +3,16 @@ const productService = require("../services/product.service");
 const getAllProduct = async (req, res) => {
   try {
     const products = await productService.getAllProducts();
-    res.status(200).json(products);
+    res.status(200).json({
+      success: true,
+      message: "Fetched products successfully",
+      data: products
+    });
   } catch (err) {
-    res.status(500).json({ error: "Failed to fetch products" });
+    res.status(500).json({ 
+      success: false,
+      message: err.message
+     });
   }
 };
 
