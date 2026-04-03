@@ -9,11 +9,6 @@ const getAllActiveProducts = async () => {
 };
 
 const createProduct = async (data) => {
-  const existing = await Product.findOne({ name: data.name });
-  if (existing) {
-    throw new Error("Product already exists");
-  }
-
   const newProduct = new Product(data);
   return await newProduct.save();
 };

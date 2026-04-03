@@ -35,11 +35,22 @@ const getAllActiveProduct = async (req, res) => {
 const addProduct = async (req, res) => {
   try {
     const savedProduct = await productService.createProduct(req.body);
-    res.status(201).json(savedProduct);
+    res.status(201).json({
+      success: true,
+      message: "Product created successfully",
+      data: savedProduct
+    });
   } catch (err) {
-    if (err.message === "Product already exists")
-      return res.status(409).json({ error: err.messag });
-    res.status(500).json({ error: "Failed to create product" });
+    if (err.code === 11000) {
+      return res.status(409).json({
+        success: false,
+        message: "Product already exists"
+      });
+    }
+    res.status(500).json({ 
+      success: false,
+      message: "Internal server error"
+    });
   }
 };
 
