@@ -61,11 +61,10 @@ const getProfile = async (userId) => {
 };
 
 const resetPassword = async (userId, newPassword) => {
-    if (newPassword.length < 8)
-        throw new Error("Password must be at least 8 characters");
-    const hashedPassword = bcrypt.hashSync(newPassword, 10);
-    await User.findByIdAndUpdate(userId, { password: hashedPassword });
-    return "Password reset successfully";
+  if (newPassword.length < 8)
+      throw new Error("Password must be at least 8 characters");
+  const hashedPassword = bcrypt.hashSync(newPassword, 10);
+  return await User.findByIdAndUpdate(userId, { password: hashedPassword });
 };
 
 const updateAdmin = async (requestingUser, userId) => {

@@ -65,15 +65,22 @@ const getProfile = async (req, res) => {
 };
 
 const resetPassword = async (req, res) => {
-    try {
-        const message = await userService.resetPassword(
-            req.user.id,
-            req.body.newPassword
-        );
-        res.status(200).send({ message });
-    } catch (error) {
-        res.status(400).send({ error: error.message });
-    }
+  try {
+    const user = await userService.resetPassword(
+      req.user.id,
+      req.body.newPassword
+    );
+    res.status(200).json({ 
+      success: true,
+      message: "Successfully changed password",
+      data: user
+    });
+  } catch (error) {
+    res.status(400).json({ 
+      success: false,
+      message: error.message 
+    });
+  }
 };
 
 const updateAdmin = async (req, res) => {
