@@ -1,5 +1,6 @@
 const mongoose = require ("mongoose");
 const PET_TYPES = ["dog", "cat"];
+const CATEGORIES = ["toys", "accessories"];
 
 const productSchema = new mongoose.Schema ({
 	name: {
@@ -13,8 +14,14 @@ const productSchema = new mongoose.Schema ({
 	},
 	petType: [{
 		type: String,
-		enum: PET_TYPES
+		enum: PET_TYPES,
+		required: true
 	}],
+	category: {
+		type: String,
+		enum: CATEGORIES,
+		required: true
+	},
 	price:{
 		type:Number,
 		required: [true, `Price is required`]
