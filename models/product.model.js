@@ -1,5 +1,5 @@
 const mongoose = require ("mongoose");
-const PET_TYPES = ["dog", "cat"];
+const PET_TYPES = ["dog", "cat", "hamster"];
 const CATEGORIES = ["toys", "accessories"];
 
 const productSchema = new mongoose.Schema ({
