@@ -47,12 +47,7 @@ const loginUser = async ({ email, password }) => {
   const isMatch = await bcrypt.compare(password, user.password);
   if (!isMatch)
     throw new Error("Invalid email or password");
-
-  const token = createAccessToken({
-    id: user._id.toString(),
-    email: user.email,
-    isAdmin: user.isAdmin
-  });
+  const token = createAccessToken(user); 
 
   return {
     token,
