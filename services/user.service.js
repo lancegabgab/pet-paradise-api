@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const User = require("../models/user.model");
 const bcrypt = require("bcrypt");
 const createAccessToken = require("../middlewares/createAccessToken");
