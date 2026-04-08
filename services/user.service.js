@@ -68,10 +68,11 @@ const getAllUsers = async () => {
 };
 
 const getProfile = async (userId) => {
-  const user = await User.findById(userId);
+  if (!userId) throw new Error("No userId provided");
+  const objectId = mongoose.Types.ObjectId(userId);
+  const user = await User.findById(objectId);
   if (!user)
     throw new Error("User not found");
-  
   return {
     id: user._id,
     firstName: user.firstName,
