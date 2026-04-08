@@ -7,15 +7,18 @@ const verify = (req, res, next) => {
   let token = req.headers.authorization;
 
   if (typeof token === "undefined") {
-    return res.send({ auth: "Failed. No Token" });
+    return res.status(401).json({ 
+      success: false,
+      message: "No token provided" 
+    });
   }
 
   if (token.startsWith("Bearer ")) token = token.slice(7);
 
   jwt.verify(token, secret, function(err, decodedToken) {
     if (err) {
-      return res.send({
-        auth: "Failed",
+      return res.status(401).json({
+        success: false,
         message: err.message
       });
     } else {
