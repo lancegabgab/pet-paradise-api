@@ -49,7 +49,7 @@ const loginUser = async ({ email, password }) => {
     throw new Error("Invalid email or password");
 
   const token = createAccessToken({
-    id: user._id,
+    id: user._id.toString(),
     email: user.email,
     isAdmin: user.isAdmin
   });
