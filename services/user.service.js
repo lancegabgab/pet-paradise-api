@@ -60,7 +60,14 @@ const loginUser = async ({ email, password }) => {
 };
 
 const getAllUsers = async () => {
-  return await User.find({});
+  const users = await User.find({});
+  return users.map(user => ({
+    id: user._id,
+    firstName: user.firstName,
+    lastName: user.lastName,
+    email: user.email,
+    isAdmin: user.isAdmin
+  }));
 };
 
 const getProfile = async (userId) => {
