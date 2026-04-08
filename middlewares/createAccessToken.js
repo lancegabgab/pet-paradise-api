@@ -5,7 +5,7 @@ const secret = process.env.JWT_SECRET;
 
 const createAccessToken = (user) => {
   const data = {
-    id: user._id,
+    id: user._id.toString(),
     email: user.email,
     isAdmin: user.isAdmin
   };
