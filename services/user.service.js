@@ -71,7 +71,15 @@ const getProfile = async (userId) => {
   const user = await User.findById(userId);
   if (!user)
     throw new Error("User not found");
-  return user;
+  
+  return {
+    id: user._id,
+    firstName: user.firstName,
+    lastName: user.lastName,
+    email: user.email,
+    mobileNo: user.mobileNo,
+    isAdmin: user.isAdmin
+  };
 };
 
 const resetPassword = async (userId, newPassword) => {
