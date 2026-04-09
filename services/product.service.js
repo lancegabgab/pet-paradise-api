@@ -1,11 +1,27 @@
 const Product = require("../models/product.model");
 
 const getAllProducts = async () => {
-  return await Product.find({});
+  const products = await Product.find({});
+  return products.map(product => ({
+    id: product._id,
+    name: product.name,
+    description: product.description,
+    price: product.price,
+    petType: product.petType,
+    category: product.category
+  }));
 };
 
 const getAllActiveProducts = async () => {
-  return await Product.find({ isActive: true });
+  const products = await Product.find({ isActive: true });
+    return products.map(product => ({
+    id: product._id,
+    name: product.name,
+    description: product.description,
+    price: product.price,
+    petType: product.petType,
+    category: product.category
+  }));
 };
 
 const createProduct = async (data) => {
