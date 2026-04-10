@@ -6,9 +6,10 @@ const getAllProducts = async () => {
     id: product._id,
     name: product.name,
     description: product.description,
-    price: product.price,
     petType: product.petType,
-    category: product.category
+    category: product.category,
+    price: product.price,
+    isActive : product.isActive
   }));
 };
 
@@ -18,9 +19,9 @@ const getAllActiveProducts = async () => {
     id: product._id,
     name: product.name,
     description: product.description,
-    price: product.price,
     petType: product.petType,
-    category: product.category
+    category: product.category,
+    price: product.price
   }));
 };
 
