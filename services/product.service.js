@@ -25,8 +25,16 @@ const getAllActiveProducts = async () => {
 };
 
 const createProduct = async (data) => {
-  const newProduct = new Product(data);
-  return await newProduct.save();
+  const newProduct = await Product.create(data);
+  const { _id, name, description, price, petType, category } = newProduct;
+  return {
+    id: _id,
+    name,
+    description,
+    price,
+    petType,
+    category
+  };
 };
 
 const getProductById = async (id) => {
