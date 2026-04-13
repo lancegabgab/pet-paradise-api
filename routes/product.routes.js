@@ -5,8 +5,8 @@ const verify = require("../middlewares/verify");
 const verifyAdmin = require("../middlewares/verifyAdmin");
 
 router.post("/", verify, verifyAdmin, productController.addProduct);
-router.get("/all", verify, verifyAdmin, productController.getAllProduct);
-router.get("/", productController.getAllActiveProduct);
+router.get("/all", verify, verifyAdmin, productController.getAllProducts);
+router.get("/", productController.getAllActiveProducts);
 router.get("/:productId", productController.getProduct);
 router.put("/:productId/update", verify, verifyAdmin, productController.updateProduct);
 router.patch("/:productId/archive", verify, verifyAdmin, productController.archiveProduct);
