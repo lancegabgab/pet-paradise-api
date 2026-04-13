@@ -6,13 +6,36 @@ const getUserCart = async (userId) => {
   const cart = await Cart.findOne({ userId });
 
   if (!cart) {
-    return { cart: null, items: [] };
+    return {
+      cart: null,
+      items: [],
+    };
   }
 
   const items = await CartItem.find({ cartId: cart._id })
     .populate("productId", "name price");
 
-  return { cart, items };
+  return {
+    cart: {
+      id: cart._id,
+      userId: cart.userId,
+      createdAt: cart.createdAt,
+      updatedAt: cart.updatedAt,
+    },
+    items: items.map(item => ({
+      id: item._id,
+      cartId: item.cartId,
+      quantity: item.quantity,
+      price: item.price,
+      product: item.productId
+        ? {
+            id: item.productId._id,
+            name: item.productId.name,
+            price: item.productId.price,
+          }
+        : null,
+    })),
+  };
 };
 
 const addToCart = async (userId, productId, quantity) => {
