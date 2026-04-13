@@ -1,6 +1,6 @@
 const productService = require("../services/product.service");
 
-const getAllProduct = async (req, res) => {
+const getAllProducts = async (req, res) => {
   try {
     const products = await productService.getAllProducts();
     res.status(200).json({
@@ -16,7 +16,7 @@ const getAllProduct = async (req, res) => {
   }
 };
 
-const getAllActiveProduct = async (req, res) => {
+const getAllActiveProducts = async (req, res) => {
   try {
     const products = await productService.getAllActiveProducts();
     res.status(200).json({
@@ -146,8 +146,8 @@ const activateProduct = async (req, res) => {
 };
 
 module.exports = {
-  getAllProduct,
-  getAllActiveProduct,
+  getAllProducts,
+  getAllActiveProducts,
   addProduct,
   getProduct,
   updateProduct,
