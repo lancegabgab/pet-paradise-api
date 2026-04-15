@@ -23,7 +23,7 @@ const getUserOrders = async (req, res) => {
     const orders = await orderService.getUserOrders(req.user?.id);
     res.status(200).json({
       success: true,
-      message: "Successfuly fetched orders",
+      message: "Successfully fetched orders",
       data: orders
     });
   } catch (error) {
@@ -40,7 +40,7 @@ const getAllOrders = async (req, res) => {
     const orders = await orderService.getAllOrders();
     res.status(200).json({
       success: true,
-      message: "Successfuly fetched orders",
+      message: "Successfully fetched orders",
       data: orders
     });
   } catch (error) {
