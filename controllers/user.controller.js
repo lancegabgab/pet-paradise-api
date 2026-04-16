@@ -92,13 +92,13 @@ const updateAdmin = async (req, res) => {
       req.user,
       req.params.userId
     );
-    res.status(200).send({ 
+    res.status(200).json({ 
       success: true, 
       message: "Successfully set to admin",
       data: user
      });
   } catch (error) {
-    res.status(403).send({ 
+    res.status(403).json({ 
       success: false,
       message: error.message
     });
