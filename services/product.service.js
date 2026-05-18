@@ -34,12 +34,23 @@ const createProduct = async (data) => {
     description,
     price,
     petType,
-    category
+    category,
+    isActive
   };
 };
 
 const getProductById = async (id) => {
-  return await Product.findById(id);
+  const product = await Product.findById(id);
+  const { _id, name, description, price, petType, category, isActive } = product;
+    return {
+    id: _id,
+    name,
+    description,
+    petType,
+    category,
+    price,
+    isActive
+  };
 };
 
 const updateProductById = async (id, data) => {
